@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login & Registration</title>
+<style>
+*{box-sizing:border-box;font-family:'Poppins',sans-serif}
+body{
+  background:linear-gradient(135deg,#a1c4fd,#c2e9fb);
+  display:flex;justify-content:center;align-items:center;
+  height:100vh;margin:0;
+}
+.container{
+  background:#fff;border-radius:15px;padding:30px 40px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.1);width:300px;text-align:center;
+}
+h2{color:#333;margin-bottom:20px}
+input{
+  width:100%;padding:10px;margin:8px 0;border:1px solid #ccc;
+  border-radius:8px;outline:none;transition:0.3s;
+}
+input:focus{border-color:#6c63ff;box-shadow:0 0 5px #6c63ff}
+button{
+  background:#6c63ff;color:#fff;border:none;padding:10px;
+  width:100%;border-radius:8px;margin-top:10px;cursor:pointer;
+  transition:0.3s;
+}
+button:hover{background:#5148d4}
+p{font-size:14px;margin-top:15px}
+a{color:#6c63ff;text-decoration:none;font-weight:500;cursor:pointer}
+a:hover{text-decoration:underline}
+#msg{margin-top:10px;font-weight:500}
+.success{color:green}
+.error{color:red}
+</style>
+</head>
+<body>
+<div class="container">
+  <h2 id="formTitle">Register</h2>
+  <input id="username" placeholder="Username" required>
+  <input id="password" type="password" placeholder="Password" required>
+  <button onclick="handleSubmit()">Submit</button>
+  <p id="msg"></p>
+  <p><a onclick="toggle()">Switch to Login</a></p>
+</div>
+
+<script>
+let isRegister = true;
+function handleSubmit(){
+  const u=document.getElementById('username').value.trim();
+  const p=document.getElementById('password').value.trim();
+  const msg=document.getElementById('msg');
+  if(!u||!p){msg.textContent="Please fill all fields";msg.className="error";return;}
+  const db=JSON.parse(localStorage.getItem('users')||'{}');
+  if(isRegister){
+    if(db[u]){msg.textContent="Username already exists!";msg.className="error";}
+    else{db[u]=p;localStorage.setItem('users',JSON.stringify(db));
+      msg.textContent="Registered successfully!";msg.className="success";}
+  }else{
+    if(db[u]&&db[u]===p){msg.textContent="Login successful!";msg.className="success";}
+    else{msg.textContent="Invalid username or password";msg.className="error";}
+  }
+}
+function toggle(){
+  isRegister=!isRegister;
+  document.getElementById('formTitle').textContent=isRegister?"Register":"Login";
+  document.getElementById('msg').textContent="";
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Feedbacks (multiple)</title>
+<style>
+body{font-family:sans-serif;background:#eef3ff;display:flex;justify-content:center;align-items:center;height:100vh;margin:0}
+.wrap{background:#fff;padding:20px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.08);width:340px}
+input,textarea{width:100%;padding:8px;margin:6px 0;border:1px solid #ccc;border-radius:6px}
+button{padding:8px 12px;background:#6c63ff;color:#fff;border:0;border-radius:6px;cursor:pointer}
+pre{background:#f7f7ff;padding:10px;border-radius:6px;white-space:pre-wrap;max-height:220px;overflow:auto}
+.clear{background:#e55353;margin-left:8px}
+.controls{display:flex;gap:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h3>Feedback Form</h3>
+  <form id="form" novalidate>
+    <input id="name" placeholder="Your name">
+    <input id="email" placeholder="Your email">
+    <textarea id="msg" placeholder="Your feedback"></textarea>
+    <div class="controls" style="margin-top:8px">
+      <button id="send">Save</button>
+      <button id="clear" type="button" class="clear">Clear all</button>
+    </div>
+  </form>
+  <h4 style="margin:10px 0 6px">Saved (JSON)</h4>
+  <pre id="output">[]</pre>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('form');
+  const nameI = document.getElementById('name');
+  const emailI = document.getElementById('email');
+  const msgI = document.getElementById('msg');
+  const out = document.getElementById('output');
+  const clearBtn = document.getElementById('clear');
+  const STORAGE_KEY = 'feedbacks';
+
+  // load existing
+  let feedbacks = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+  out.textContent = JSON.stringify(feedbacks, null, 2);
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const data = {
+      name: nameI.value.trim(),
+      email: emailI.value.trim(),
+      message: msgI.value.trim(),
+      time: new Date().toISOString()
+    };
+    if(!data.name || !data.email || !data.message){
+      alert('Please fill all fields');
+      return;
+    }
+    feedbacks.push(data);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(feedbacks));
+    out.textContent = JSON.stringify(feedbacks, null, 2);
+    nameI.value = emailI.value = msgI.value = '';
+  });
+
+  clearBtn.addEventListener('click', () => {
+    if(!confirm('Clear all saved feedbacks?')) return;
+    feedbacks = [];
+    localStorage.removeItem(STORAGE_KEY);
+    out.textContent = JSON.stringify(feedbacks, null, 2);
+  });
+});
+</script>
+</body>
+</html>

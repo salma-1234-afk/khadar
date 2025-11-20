@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body{font-family:sans-serif;text-align:center}
+form{display:inline-block;margin-top:50px}
+input{display:block;margin:5px auto;padding:5px}
+</style>
+</head>
+<body>
+<h2 id="title">Register</h2>
+<form onsubmit="handle(event)">
+  <input id="user" placeholder="Username" required>
+  <input id="pass" type="password" placeholder="Password" required>
+  <button>Submit</button>
+</form>
+<p id="msg"></p>
+<a href="#" onclick="toggle()">Switch to Login</a>
+
+<script>
+let reg=true,db={}
+function handle(e){
+  e.preventDefault()
+  let u=user.value,p=pass.value
+  if(reg){db[u]=p;msg.textContent="Registered!"}
+  else msg.textContent=db[u]==p?"Login success!":"Invalid!"
+}
+function toggle(){
+  reg=!reg
+  title.textContent=reg?"Register":"Login"
+  msg.textContent=""
+}
+</script>
+</body>
+</html>

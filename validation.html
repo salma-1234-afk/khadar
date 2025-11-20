@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Simple JS Validation</title>
+<style>
+body{font-family:sans-serif;background:#eef3ff;display:flex;justify-content:center;align-items:center;height:100vh}
+form{background:#fff;padding:25px 30px;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+input{display:block;width:220px;margin:8px 0;padding:8px;border:1px solid #ccc;border-radius:6px}
+p{color:red;margin:0;font-size:13px}
+button{width:100%;padding:8px;margin-top:6px;background:#6c63ff;color:#fff;border:0;border-radius:6px;cursor:pointer}
+</style>
+</head>
+<body>
+<form onsubmit="return validate()" novalidate>
+  <h3>Signup</h3>
+  <input id="name" placeholder="Name">
+  <p id="nErr"></p>
+  <input id="email" placeholder="Email">
+  <p id="eErr"></p>
+  <input id="pass" type="password" placeholder="Password">
+  <p id="pErr"></p>
+  <button>Submit</button>
+</form>
+
+<script>
+function validate(){
+  let ok=true;
+  let n=name.value.trim(),e=email.value.trim(),p=pass.value.trim();
+  nErr.textContent=eErr.textContent=pErr.textContent="";
+  if(n===""){nErr.textContent="Enter name";ok=false;}
+  if(!/^[^ ]+@[^ ]+\.[a-z]{2,}$/.test(e)){eErr.textContent="Invalid email";ok=false;}
+  if(p.length<6){pErr.textContent="At least 6 chars";ok=false;}
+  if(ok){alert("Form submitted successfully!");}
+  return false; // always prevent reload
+}
+</script>
+</body>
+</html>
